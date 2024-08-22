@@ -1,9 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
+
+import AuthButton from "../component/AuthButton";
 
 export default function Login() {
   const [user, setUser] = useState(null);
@@ -43,13 +44,10 @@ export default function Login() {
   }
 
   return (
-    <main className="h-screen flex items-center justify-center bg-green-400 p-6">
-      <button
-        onClick={handleSignInWithGoogle}
-        className="w-full mt-2 p-3 rounded-md bg-gray-700 text-white hover:bg-gray-600 focus:outline-none"
-      >
-        Sign In with google
-      </button>
+    <main className="h-screen w-screen bg-white flex items-center justify-center flex-col gap-5">
+      <AuthButton icon={'images/google-icon.svg'} text={'Google'} clickHandler={handleSignInWithGoogle}/>
+      <AuthButton icon={'images/facebook-icon.svg'} text={'Facebook'}/>
+      <AuthButton icon={'images/apple-icon.svg'} text={'Apple'}/>
     </main>
   );
 }

@@ -25,6 +25,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <NavBar/>
       <div
         className="bg-white/10 px-5 py-2 rounded-md"
         onClick={() => router.push("/login")}
