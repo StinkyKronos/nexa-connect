@@ -10,6 +10,7 @@ import Search from "./ui/search";
 
 export default function Home() {
   const [user, setUser] = useState(null);
+  const [properties, setProperties] = useState();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const supabase = createClientComponentClient();
@@ -27,6 +28,17 @@ export default function Home() {
     };
     getUser();
   });
+
+  useEffect(() => {
+    if (search) {
+      queryDB(search);
+    }
+  }, [search]);
+
+  const queryDB = async (search) => {
+    const { data } = await supabase.from("properties").select();
+    setProperties(data);
+  };
 
   if (user) return <main>rfe</main>;
 
