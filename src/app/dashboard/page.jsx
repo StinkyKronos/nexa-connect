@@ -36,5 +36,12 @@ export default function Dashboard() {
       </main>
     );
 
+  if (loading)
+    return (
+      <main>
+        <div>Loading</div>
+      </main>
+    );
+
   router.push("/login");
 }
