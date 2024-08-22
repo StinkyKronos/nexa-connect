@@ -45,9 +45,19 @@ export default function Login() {
 
   return (
     <main className="h-screen w-screen bg-white flex items-center justify-center flex-col gap-5">
-      <AuthButton icon={'images/google-icon.svg'} text={'Google'} clickHandler={handleSignInWithGoogle}/>
-      <AuthButton icon={'images/facebook-icon.svg'} text={'Facebook'}/>
-      <AuthButton icon={'images/apple-icon.svg'} text={'Apple'}/>
+      <div className="">
+        <p>
+          The future belongs to those who believe in the beauty of their dreams.
+        </p>
+        <p>- Eleanor Roosevelt</p>
+      </div>
+      <AuthButton
+        icon={"images/google-icon.svg"}
+        text={"Google"}
+        clickHandler={handleSignInWithGoogle}
+      />
+      <AuthButton icon={"images/facebook-icon.svg"} text={"Facebook"} />
+      <AuthButton icon={"images/apple-icon.svg"} text={"Apple"} />
     </main>
   );
 }
