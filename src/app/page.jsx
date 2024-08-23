@@ -10,12 +10,15 @@ import Search from "./ui/search";
 import Footer from "./component/Footer";
 import CheckboxSearch from "./component/CheckboxSearch";
 import PropertyCard from "./component/PropertyCard";
-
 export default function Home() {
   const [user, setUser] = useState(null);
-  const [properties, setProperties] = useState();
+  const [properties, setProperties] = useState([]);
   const [distance, setDistance] = useState(10);
-  const [filterProperties, setFilterProperties] = useState();
+  const [minBudget, setMinBudget] = useState(0);
+  const [maxBudget, setMaxBudget] = useState(0);
+  const [sharing, setSharing] = useState([]);
+  const [gender, setGender] = useState([]);
+  const [filterProperties, setFilterProperties] = useState([]);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const supabase = createClientComponentClient();
@@ -32,7 +35,7 @@ export default function Home() {
       setLoading(false);
     };
     getUser();
-  });
+  }, []);
 
   useEffect(() => {
     if (search) {
@@ -40,11 +43,41 @@ export default function Home() {
     }
   }, [search]);
 
+  useEffect(() => {
+    applyFilters();
+  }, [properties, distance, minBudget, maxBudget, sharing, gender]);
+
   const queryDB = async (search) => {
     const { data } = await supabase.from("properties").select();
+    console.log(data);
     setProperties(data);
+    setFilterProperties(data);
   };
 
+  const applyFilters = () => {
+    const filtered = properties.filter((property) => {
+      return (
+        property.distance_from_college <= distance &&
+        (minBudget === 0 || property.rent >= parseInt(minBudget)) &&
+        (maxBudget === 0 || property.rent <= parseInt(maxBudget)) &&
+        (sharing.length === 0 || sharing.includes(property.occupancy)) &&
+        (gender.length === 0 || gender.includes(property.gender))
+      );
+    });
+    setFilterProperties(filtered);
+  };
+
+  const handleSharingChange = (value) => {
+    setSharing((prev) =>
+      prev.includes(value) ? prev.filter((s) => s !== value) : [...prev, value]
+    );
+  };
+
+  const handleGenderChange = (value) => {
+    setGender((prev) =>
+      prev.includes(value) ? prev.filter((g) => g !== value) : [...prev, value]
+    );
+  };
   if (search == "")
     return (
       <main className="h-fit w-screen bg-inherit">
@@ -154,10 +187,16 @@ export default function Home() {
               <input
                 type="range"
                 className="w-full accent-[#FC813E]"
-                onChange={(e) => setDistance(e)}
+                id="distance"
+                max={10000}
+                min={0}
+                defaultValue={1000}
+                onChange={(e) => {
+                  setDistance(e.target.value);
+                }}
               />
               <p className="text-[#848484] poppins-medium">
-                Dist. from College: 7.5km
+                Dist. from College: {distance / 1000} km
               </p>
             </div>
 
@@ -168,15 +207,23 @@ export default function Home() {
               <div className="flex gap-5 mt-2">
                 <div className="w-full">
                   <input
-                    className="border-[#FC813E] bg-[#FFF3ED] border-2 poppins-medium w-full"
+                    className="border-[#FC813E] bg-[#FFF3ED] border-2 poppins-medium w-full text-black"
                     type="text"
+                    min={0}
+                    max={50000}
+                    defaultValue={0}
+                    onChange={(e) => setMinBudget(e.target.value)}
                   />
                   <p className="text-[#848484] poppins-medium w-fit">min.</p>
                 </div>
                 <div className="w-full">
                   <input
-                    className="border-[#FC813E] bg-[#FFF3ED] border-2 poppins-medium w-full"
+                    className="border-[#FC813E] bg-[#FFF3ED] border-2 poppins-medium w-full text-black"
                     type="text"
+                    min={1}
+                    max={50000}
+                    defaultValue={50000}
+                    onChange={(e) => setMaxBudget(e.target.value)}
                   />
                   <p className="text-[#848484] poppins-medium w-fit">max.</p>
                 </div>
@@ -186,18 +233,42 @@ export default function Home() {
             <div className="bg-white w-full px-5 py-5 rounded-xl flex items-center justify-center flex-col gap-3">
               <p className="text-[#848484] poppins-medium w-full">Sharing</p>
               <div className="grid grid-cols-2 w-full h-fit gap-5">
-                <CheckboxSearch title="Single" />
-                <CheckboxSearch title="Double" />
-                <CheckboxSearch title="Triple" />
-                <CheckboxSearch title="Four" />
+                <CheckboxSearch
+                  title="Single"
+                  value={"Single"}
+                  onChange={(e) => handleSharingChange(e.target.value)}
+                />
+                <CheckboxSearch
+                  title="Double"
+                  value={"Double"}
+                  onChange={(e) => handleSharingChange(e.target.value)}
+                />
+                <CheckboxSearch
+                  title="Triple"
+                  value={"Triple"}
+                  onChange={(e) => handleSharingChange(e.target.value)}
+                />
+                <CheckboxSearch
+                  title="Four"
+                  value={"Four"}
+                  onChange={(e) => handleSharingChange(e.target.value)}
+                />
               </div>
             </div>
 
             <div className="bg-white w-full px-5 py-5 rounded-xl flex items-center justify-center flex-col gap-3">
               <p className="text-[#848484] poppins-medium w-full">Gender</p>
               <div className="grid grid-cols-2 w-full h-fit gap-5">
-                <CheckboxSearch title="Male" />
-                <CheckboxSearch title="Female" />
+                <CheckboxSearch
+                  title="Male"
+                  value={"Male"}
+                  onChange={(e) => handleGenderChange(e.target.value)}
+                />
+                <CheckboxSearch
+                  title="Female"
+                  value={"Female"}
+                  onChange={(e) => handleGenderChange(e.target.value)}
+                />
               </div>
             </div>
           </form>
@@ -209,15 +280,22 @@ export default function Home() {
             </div>
             <Suspense key={search}></Suspense>
             <div className="h-[60vh] overflow-auto scrollbar-hidden my-5">
-              <PropertyCard />
-              <PropertyCard />
-              <PropertyCard />
-              <PropertyCard />
+              {filterProperties ? (
+                filterProperties.map((pro) => (
+                  <PropertyCard
+                    key={pro.id}
+                    name={pro.property_name}
+                    rent={pro.rent}
+                    occupancy={pro.occupancy}
+                  />
+                ))
+              ) : (
+                <h3>No properties found</h3>
+              )}
             </div>
           </div>
         </div>
       </div>
-      <Footer />
     </main>
   );
 }
