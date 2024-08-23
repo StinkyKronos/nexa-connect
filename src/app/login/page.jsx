@@ -5,9 +5,11 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 
 import AuthButton from "../component/AuthButton";
+import CheckboxSearch from "../component/CheckboxSearch";
 
 export default function Login() {
   const [user, setUser] = useState(null);
+  const [isOwner, setIsOwner] = useState(false);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
@@ -32,9 +34,16 @@ export default function Login() {
           access_type: "offline",
           prompt: "consent",
         },
-        redirectTo: `${location.origin}/dashboard`,
+        redirectTo: isOwner
+          ? `${location.origin}/dashboard/owner`
+          : `${location.origin}/dashboard/tenant`,
       },
     });
+  };
+
+  const handleAuthType = () => {
+    const type = document.getElementById("Owner");
+    console.log(type);
   };
 
   if (user) router.push("/dashboard");
@@ -51,11 +60,22 @@ export default function Login() {
         </p>
         <p>- Eleanor Roosevelt</p>
       </div>
-      <AuthButton
-        icon={"images/google-icon.svg"}
-        text={"Google"}
-        clickHandler={handleSignInWithGoogle}
-      />
+      <form
+        onChange={() => {
+          handleAuthType();
+          // setIsOwner(this.form.auth == "Owner" ? true : false);
+        }}
+      >
+        <CheckboxSearch title="Owner" value="Owner" />
+        <CheckboxSearch title="Tenant" value="Tenant" />
+        <AuthButton
+          icon={"images/google-icon.svg"}
+          text={"Google"}
+          clickHandler={() => {
+            handleSignInWithGoogle();
+          }}
+        />
+      </form>
       <AuthButton icon={"images/facebook-icon.svg"} text={"Facebook"} />
       <AuthButton icon={"images/apple-icon.svg"} text={"Apple"} />
     </main>
