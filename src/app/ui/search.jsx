@@ -17,15 +17,15 @@ export default function Search() {
     } else {
       params.delete("search");
     }
-    replace(`${pathname}?${params.toString()}`);
+    replace(`${pathname}?${params.toString()}#search`);
   }
 
   return (
-    <div className="w-full h-14 bg-white rounded-2xl flex justify-between items-center px-5">
+    <div className="w-full h-14 bg-[#EFEEEE] rounded-2xl flex justify-between items-center px-5">
       <input
         type="text"
         placeholder="Search"
-        className="focus:outline-none w-full text-black poppins-medium h-3/4"
+        className="focus:outline-none w-full text-black poppins-medium h-3/4 bg-inherit"
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={(e) => {
           if (e.key == "Enter") handleSearch();

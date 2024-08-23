@@ -142,3 +142,8 @@ body {
   font-weight: 900;
   font-style: italic;
 }
+
+
+.scrollbar-hidden {
+  scrollbar-width: none;
+}
