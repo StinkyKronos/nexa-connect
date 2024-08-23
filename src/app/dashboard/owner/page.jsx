@@ -3,25 +3,26 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import LoadingPage from "@/app/loading/page";
 export default function Dashboard() {
-	const [user, setUser] = useState(null);
-	const router = useRouter();
-	const [loading, setLoading] = useState(true);
-	const supabase = createClientComponentClient();
-	useEffect(() => {
-		const getUser = async () => {
-			const {
-				data: { user },
-			} = await supabase.auth.getUser();
-			setUser(user);
-			setLoading(false);
-		};
-		getUser();
-	});
+  const [user, setUser] = useState(null);
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const supabase = createClientComponentClient();
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user);
+      setLoading(false);
+    };
+    getUser();
+  });
 
-	const handleSignOut = async () => {
-		await supabase.auth.signOut();
-	};
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+  };
 
 	if (user)
 		return (
@@ -30,12 +31,7 @@ export default function Dashboard() {
 			</main>
 		);
 
-	if (loading)
-		return (
-			<main>
-				<div>Loading</div>
-			</main>
-		);
+  if (loading) return <LoadingPage />;
 
-	router.push("/login");
+  router.push("/login");
 }
