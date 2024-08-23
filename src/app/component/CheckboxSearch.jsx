@@ -1,4 +1,4 @@
-export default function CheckboxSearch({ title, value, isAuth, isGender }) {
+export default function CheckboxSearch({ title, value, isAuth, isGender, handler }) {
   return (
     <div className="w-full h-fit relative">
       <input
@@ -7,6 +7,7 @@ export default function CheckboxSearch({ title, value, isAuth, isGender }) {
         name={isAuth ? "auth" : isGender ? "gender" : "sharing"}
         value={value}
         className="w-full h-full absolute appearance-none border-black/20 bg-[#FFF3ED] checked:border-[#FC813E] border-2"
+        onChange={() => handler(value)}
       />
       <label
         htmlFor={title}

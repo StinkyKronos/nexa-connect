@@ -25,11 +25,8 @@ export default function Dashboard() {
 
 	if (user)
 		return (
-			<main className="flex min-h-screen flex-col items-center justify-between p-24">
-				<div className="bg-white/10 px-5 py-2 rounded-md">Signed In...</div>
-				<button onClick={handleSignOut} className="w-full mt-2 p-3 rounded-md bg-gray-700 text-white hover:bg-gray-600 focus:outline-none">
-					Sign Out
-				</button>
+			<main className="w-screen h-screen">
+				<img className="w-full" src="/images/owner-dash.jpg" alt="" />
 			</main>
 		);
 
