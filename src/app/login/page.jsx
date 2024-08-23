@@ -42,11 +42,6 @@ export default function Login() {
     });
   };
 
-  const handleAuthType = () => {
-    const type = document.getElementById("Owner");
-    console.log(type);
-  };
-
   if (user) router.push("/dashboard/tenant");
 
   if (loading) return <LoadingPage />;
@@ -56,6 +51,7 @@ export default function Login() {
         <h1 className="text-black text-3xl poppins-medium w-full">ApnaKamra</h1>
         <form
           action=""
+          onChange={(e) => setIsOwner(e.target.value == "owner" ? true : false)}
           className="h-full w-fit flex flex-col items-center justify-center gap-5"
         >
           <div className="flex items-center justify-center gap-5 h-fit w-fit">
@@ -63,7 +59,8 @@ export default function Login() {
               <input
                 type="radio"
                 name="services"
-                value=""
+                value="tenant"
+                defaultChecked
                 className="w-full h-full absolute appearance-none border-[#fba97b] bg-[#FFF3ED] checked:border-[#FC813E] checked:bg-[#FFDFCD] border-2 cursor-pointer"
               />
               <label className="w-full h-full flex flex-col justify-center items-center px-20 py-3">
@@ -76,7 +73,7 @@ export default function Login() {
               <input
                 type="radio"
                 name="services"
-                value=""
+                value="owner"
                 className="w-full h-full absolute appearance-none border-[#fba97b] bg-[#FFF3ED] checked:border-[#FC813E] checked:bg-[#FFDFCD] border-2 cursor-pointer"
               />
               <label className="w-full h-full flex flex-col justify-center items-center px-20 py-3">
