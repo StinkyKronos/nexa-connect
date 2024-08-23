@@ -10,6 +10,7 @@ import Search from "./ui/search";
 import Footer from "./component/Footer";
 import CheckboxSearch from "./component/CheckboxSearch";
 import PropertyCard from "./component/PropertyCard";
+import LoadingPage from "./loading/page";
 export default function Home() {
   const [user, setUser] = useState(null);
   const [properties, setProperties] = useState([]);
@@ -23,8 +24,8 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const supabase = createClientComponentClient();
 
-	const searchParams = useSearchParams();
-	let search = searchParams.get("search") ? searchParams.get("search") : "";
+  const searchParams = useSearchParams();
+  let search = searchParams.get("search") ? searchParams.get("search") : "";
 
   useEffect(() => {
     const getUser = async () => {
@@ -78,6 +79,7 @@ export default function Home() {
       prev.includes(value) ? prev.filter((g) => g !== value) : [...prev, value]
     );
   };
+  if (loading) return <LoadingPage />;
   if (search == "")
     return (
       <main className="h-fit w-screen bg-inherit">
@@ -151,25 +153,27 @@ export default function Home() {
                 to find and manage their homes. <br /> What are you waiting for?
               </p>
 
-							<p className="text-6xl poppins-semibold mb-10">
-								Join the <span className="text-[#FC813E]">Community.</span>
-							</p>
-						</div>
-					</div>
-					<div className="w-full flex justify-center items-center mt-10">
-						<button className="bg-[#FC813E] text-3xl poppins-medium px-16 py-2 rounded-lg">Get Started</button>
-					</div>
-				</div>
-				<Footer />
-			</main>
-		);
+              <p className="text-6xl poppins-semibold mb-10">
+                Join the <span className="text-[#FC813E]">Community.</span>
+              </p>
+            </div>
+          </div>
+          <div className="w-full flex justify-center items-center mt-10">
+            <button className="bg-[#FC813E] text-3xl poppins-medium px-16 py-2 rounded-lg">
+              Get Started
+            </button>
+          </div>
+        </div>
+        <Footer />
+      </main>
+    );
 
-	return (
-		<main className="h-fit w-screen bg-inherit">
-			<NavBar link1={"Dashboard"} link2={"Settings"} />
-			<flex className="w-screen h-fit flex items-center justify-center">
-				<div className="w-[80vw] h-[60vh] bg-cover bg-search-banner rounded-xl mt-32"></div>
-			</flex>
+  return (
+    <main className="h-fit w-screen bg-inherit">
+      <NavBar link1={"Dashboard"} link2={"Settings"} />
+      <flex className="w-screen h-fit flex items-center justify-center">
+        <div className="w-[80vw] h-[60vh] bg-cover bg-search-banner rounded-xl mt-32"></div>
+      </flex>
 
       <div className="w-screen min-h-96 flex px-32 my-10 gap-8" id="search">
         <div className="flex-[0.3]">
