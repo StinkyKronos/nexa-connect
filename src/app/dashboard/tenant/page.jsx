@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import LoadingPage from "@/app/loading/page";
 export default function Dashboard() {
 	const [user, setUser] = useState(null);
 	const router = useRouter();
@@ -26,15 +27,13 @@ export default function Dashboard() {
 	if (user)
 		return (
 			<main className="w-screen h-screen">
-				<img className="w-full" src="/images/tenant-dash.jpg" alt="" />
+				<img className="w-full cursor-default" src="/images/tenant-dash.jpg" alt="" onClick={() =>router.push('/')} />
 			</main>
 		);
 
 	if (loading)
 		return (
-			<main>
-				<div>Loading</div>
-			</main>
+			<LoadingPage/>
 		);
 
 	router.push("/login");

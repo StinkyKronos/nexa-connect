@@ -27,7 +27,7 @@ export default function Dashboard() {
 	if (user)
 		return (
 			<main className="w-screen h-screen">
-				<img className="w-full" src="/images/owner-dash.jpg" alt="" />
+				<img className="w-full" src="/images/owner-dash.jpg" alt="" onClick={() =>router.push('/')} />
 			</main>
 		);
 

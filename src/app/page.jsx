@@ -14,7 +14,7 @@ import LoadingPage from "./loading/page";
 export default function Home() {
 	const [user, setUser] = useState(null);
 	const [properties, setProperties] = useState([]);
-	const [distance, setDistance] = useState(10);
+	const [distance, setDistance] = useState(200);
 	const [minBudget, setMinBudget] = useState(0);
 	const [maxBudget, setMaxBudget] = useState(0);
 	const [sharing, setSharing] = useState([]);
@@ -24,8 +24,8 @@ export default function Home() {
 	const [loading, setLoading] = useState(true);
 	const supabase = createClientComponentClient();
 
-  const searchParams = useSearchParams();
-  let search = searchParams.get("search") ? searchParams.get("search") : "";
+	const searchParams = useSearchParams();
+	let search = searchParams.get("search") ? searchParams.get("search") : "";
 
 	useEffect(() => {
 		const getUser = async () => {
@@ -125,27 +125,25 @@ export default function Home() {
 								Thousands of happy tenants and property owners have trusted us to find and manage their homes. <br /> What are you waiting for?
 							</p>
 
-              <p className="text-6xl poppins-semibold mb-10">
-                Join the <span className="text-[#FC813E]">Community.</span>
-              </p>
-            </div>
-          </div>
-          <div className="w-full flex justify-center items-center mt-10">
-            <button className="bg-[#FC813E] text-3xl poppins-medium px-16 py-2 rounded-lg">
-              Get Started
-            </button>
-          </div>
-        </div>
-        <Footer />
-      </main>
-    );
+							<p className="text-6xl poppins-semibold mb-10">
+								Join the <span className="text-[#FC813E]">Community.</span>
+							</p>
+						</div>
+					</div>
+					<div className="w-full flex justify-center items-center mt-10">
+						<button className="bg-[#FC813E] text-3xl poppins-medium px-16 py-2 rounded-lg">Get Started</button>
+					</div>
+				</div>
+				<Footer />
+			</main>
+		);
 
-  return (
-    <main className="h-fit w-screen bg-inherit">
-      <NavBar link1={"Dashboard"} link2={"Settings"} />
-      <flex className="w-screen h-fit flex items-center justify-center">
-        <div className="w-[80vw] h-[60vh] bg-cover bg-search-banner rounded-xl mt-32"></div>
-      </flex>
+	return (
+		<main className="h-fit w-screen bg-inherit relative">
+			<NavBar link1={"Dashboard"} link2={"Settings"} />
+			<flex className="w-screen h-fit flex items-center justify-center">
+				<div className="w-[80vw] h-[60vh] bg-cover bg-search-banner rounded-xl mt-32"></div>
+			</flex>
 
 			<div className="w-screen min-h-96 flex px-32 my-10 gap-8" id="search">
 				<div className="flex-[0.3]">
@@ -161,7 +159,7 @@ export default function Home() {
 								id="distance"
 								max={10000}
 								min={0}
-								defaultValue={1000}
+								defaultValue={200}
 								onChange={(e) => {
 									setDistance(e.target.value);
 								}}
@@ -213,7 +211,23 @@ export default function Home() {
 						</div>
 					</div>
 				</div>
+
+				<img
+					className="absolute bottom-24 right-10"
+					src="images/chatbot.svg"
+					alt=""
+					width={46}
+					height={46}
+					onClick={() => {
+						i = window.open("https://200c9fafeba7293b46.gradio.live/", "Ankita - ApnaKamra AI ChatBot", "height=600, width=400");
+						if (window.focus) {
+							i.focus();
+						}
+						return false;
+					}}
+				/>
 			</div>
+			<Footer />
 		</main>
 	);
 }
